@@ -26,29 +26,32 @@ export default function HomeScreen() {
       logo: require('@/assets/images/charity.png'),
       share: 20,
       furtherCategories: [
-        { id: 1, name: 'Online', logo: require('@/assets/images/charity.png'), share: 40 },
-        { id: 2, name: 'In-person', logo: require('@/assets/images/charity.png'), share: 30 },
-        { id: 3, name: 'Volunteer', logo: require('@/assets/images/charity.png'), share: 30 },
+        { id: 1, name: 'MATW', logo: require('@/assets/images/matw.png'), share: 60 },
+        { id: 2, name: 'Al-khidmat', logo: require('@/assets/images/Al-khidmat.png'), share: 15 },
+        { id: 2, name: 'JDC', logo: require('@/assets/images/Jdc.png'), share: 15 },
+        { id: 3, name: 'personal', logo: require('@/assets/images/sadqaa.png'), share: 10 },
       ],
     },
     {
       id: 2,
       name: 'Invest',
-      logo: require('@/assets/images/investment.png'),
+      logo: require('@/assets/images/invest.png'),
       share: 20,
       furtherCategories: [
-        { id: 1, name: 'Stocks', logo: require('@/assets/images/investment.png'), share: 50 },
-        { id: 2, name: 'Real Estate', logo: require('@/assets/images/investment.png'), share: 50 },
+        { id: 1, name: 'AHL', logo: require('@/assets/images/AHL.png'), share: 30 },
+        { id: 2, name: 'Hajj', logo: require('@/assets/images/kaaba.png'), share: 30 },
+        { id: 3, name: 'AMMF', logo: require('@/assets/images/AMMF.png'), share: 20 },
+        { id: 4, name: 'AHMF', logo: require('@/assets/images/AHMF.png'), share: 20 },
       ],
     },
     {
       id: 3,
       name: 'Personal',
-      logo: require('@/assets/images/personal-wealth.png'),
+      logo: require('@/assets/images/personal.png'),
       share: 20,
       furtherCategories: [
-        { id: 1, name: 'Entertainment', logo: require('@/assets/images/personal-wealth.png'), share: 40 },
-        { id: 2, name: 'Clothing', logo: require('@/assets/images/personal-wealth.png'), share: 60 },
+        { id: 1, name: 'Me', logo: require('@/assets/images/me.png'), share: 50 },
+        { id: 2, name: 'Api', logo: require('@/assets/images/sister.png'), share: 50 },
       ],
     },
     {
@@ -57,8 +60,8 @@ export default function HomeScreen() {
       logo: require('@/assets/images/home.png'),
       share: 20,
       furtherCategories: [
-        { id: 1, name: 'Rent', logo: require('@/assets/images/home.png'), share: 70 },
-        { id: 2, name: 'Repairs', logo: require('@/assets/images/home.png'), share: 30 },
+        { id: 1, name: 'Baba', logo: require('@/assets/images/baba.png'), share: 70 },
+        { id: 2, name: 'bhai', logo: require('@/assets/images/brother.png'), share: 30 },
       ],
     },
     {
@@ -67,15 +70,22 @@ export default function HomeScreen() {
       logo: require('@/assets/images/jar.png'),
       share: 20,
       furtherCategories: [
-        { id: 1, name: 'Emergency Fund', logo: require('@/assets/images/jar.png'), share: 50 },
-        { id: 2, name: 'Future Investments', logo: require('@/assets/images/jar.png'), share: 50 },
+        { id: 1, name: 'Car', logo: require('@/assets/images/car.png'), share: 50 },
+        { id: 2, name: 'short term', logo: require('@/assets/images/saving.png'), share: 50 },
       ],
     },
   ];
 
-  const calculateAmount = (share: number): string => {
+  // Calculate amount for a category based on its share of the total amount
+  const calculateMainCategoryAmount = (share: number): string => {
     const amount = Math.floor(parseFloat(totalAmount));
     return isNaN(amount) ? '0' : Math.floor((amount * share) / 100).toString();
+  };
+
+  // Calculate the amount for subcategories based on their share of the parent category amount
+  const calculateSubcategoryAmount = (mainAmount: number, subCategoryShare: number): string => {
+    const subCategoryAmount = Math.floor((mainAmount * subCategoryShare) / 100);
+    return subCategoryAmount.toString();
   };
 
   const handleTilePress = (category: Category) => {
@@ -89,7 +99,7 @@ export default function HomeScreen() {
       setTimeout(() => inputRef.current?.focus(), 100); // Slight delay for reliable focus
     }
   };
-  
+
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: dark ? '#222' : '#E9E9E9' }]}>     
@@ -117,16 +127,19 @@ export default function HomeScreen() {
         <FlatList
           data={expenditureCategories}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleTilePress(item)} style={styles.tile}>
-              <Image source={item.logo} style={styles.categoryLogo} />
-              <View style={styles.tileContent}>
-                <ThemedText style={styles.categoryName}>{item.name}</ThemedText>
-                <ThemedText style={styles.percentageText}>{item.share}%</ThemedText>
-                <ThemedText style={styles.amountText}>Rs. {calculateAmount(item.share)}</ThemedText>
-              </View>
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => {
+            const mainCategoryAmount = calculateMainCategoryAmount(item.share);
+            return (
+              <TouchableOpacity onPress={() => handleTilePress(item)} style={styles.tile}>
+                <Image source={item.logo} style={styles.categoryLogo} />
+                <View style={styles.tileContent}>
+                  <ThemedText style={styles.categoryName}>{item.name}</ThemedText>
+                  <ThemedText style={styles.percentageText}>{item.share}%</ThemedText>
+                  <ThemedText style={styles.amountText}>Rs. {mainCategoryAmount}</ThemedText>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
         />
 
         {/* Further Categories Section */}
@@ -137,14 +150,18 @@ export default function HomeScreen() {
             horizontal
             style={styles.horizontalList}
             contentContainerStyle={styles.centeredList}
-            renderItem={({ item }) => (
-              <View style={styles.horizontalTile}>
-                <Image source={item.logo} style={styles.categoryLogo} />
-                <ThemedText style={styles.categoryName}>{item.name}</ThemedText>
-                <ThemedText style={styles.percentageText}>{item.share}%</ThemedText>
-                <ThemedText style={styles.amountText}>Rs. {calculateAmount(item.share)}</ThemedText>
-              </View>
-            )}
+            renderItem={({ item }) => {
+              const mainCategoryAmount = calculateMainCategoryAmount(selectedCategory.share);
+              const subcategoryAmount = calculateSubcategoryAmount(parseInt(mainCategoryAmount), item.share);
+              return (
+                <View style={styles.horizontalTile}>
+                  <Image source={item.logo} style={styles.categoryLogo} />
+                  <ThemedText style={styles.categoryName}>{item.name}</ThemedText>
+                  <ThemedText style={styles.percentageText}>{item.share}%</ThemedText>
+                  <ThemedText style={styles.amountText}>Rs. {subcategoryAmount}</ThemedText>
+                </View>
+              );
+            }}
           />
         )}
       </ScrollView>

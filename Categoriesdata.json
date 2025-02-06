@@ -1,0 +1,108 @@
+[
+    {
+      "id": 1,
+      "name": "Charity",
+      "logo": "@/assets/images/charity.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "Online",
+          "logo": "@/assets/images/charity.png",
+          "share": 40
+        },
+        {
+          "id": 2,
+          "name": "In-person",
+          "logo": "@/assets/images/charity.png",
+          "share": 30
+        },
+        {
+          "id": 3,
+          "name": "Volunteer",
+          "logo": "@/assets/images/charity.png",
+          "share": 30
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Invest",
+      "logo": "@/assets/images/investment.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "Stocks",
+          "logo": "@/assets/images/investment.png",
+          "share": 50
+        },
+        {
+          "id": 2,
+          "name": "Real Estate",
+          "logo": "@/assets/images/investment.png",
+          "share": 50
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Personal",
+      "logo": "@/assets/images/personal-wealth.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "Entertainment",
+          "logo": "@/assets/images/personal-wealth.png",
+          "share": 40
+        },
+        {
+          "id": 2,
+          "name": "Clothing",
+          "logo": "@/assets/images/personal-wealth.png",
+          "share": 60
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Home",
+      "logo": "@/assets/images/home.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "Rent",
+          "logo": "@/assets/images/home.png",
+          "share": 70
+        },
+        {
+          "id": 2,
+          "name": "Repairs",
+          "logo": "@/assets/images/home.png",
+          "share": 30
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Savings",
+      "logo": "@/assets/images/jar.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "Emergency Fund",
+          "logo": "@/assets/images/jar.png",
+          "share": 50
+        },
+        {
+          "id": 2,
+          "name": "Future Investments",
+          "logo": "@/assets/images/jar.png",
+          "share": 50
+        }
+      ]
+    }
+  ]

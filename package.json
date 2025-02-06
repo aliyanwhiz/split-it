@@ -1,6 +1,6 @@
 {
   "name": "split-it",
-  "main": "expo-router/entry",
+  "main": "AppEntry.js",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
@@ -48,7 +48,9 @@
     "jest": "^29.2.1",
     "jest-expo": "~52.0.3",
     "react-test-renderer": "18.3.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "eslint": "^8.57.0",
+    "eslint-config-expo": "~8.0.1"
   },
   "private": true
 }

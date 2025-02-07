@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/cash.png",
+    "package": "com.Aliyanwhiz.myapp",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -15,7 +16,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/cash.png",
         "backgroundColor": "#143D60"
-      }
+      },
+      "package": "com.aliyanwhiz.splitit"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +38,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "6daab244-52ec-4c9f-a235-8c5ec530d1bf"
+      }
     }
   }
 }

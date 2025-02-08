@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Image, StyleSheet, TextInput, TouchableOpacity, FlatList, View, ScrollView } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -16,76 +16,88 @@ interface Category {
 export default function HomeScreen() {
   const [totalAmount, setTotalAmount] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [usdToPkrRate, setUsdToPkrRate] = useState<number>(1);
   const inputRef = useRef<TextInput>(null);
   const { dark } = useTheme();
 
   const expenditureCategories = [
-    {
-      id: 1,
-      name: 'Charity',
-      logo: require('@/assets/images/charity.png'),
-      share: 20,
-      furtherCategories: [
-        { id: 1, name: 'MATW', logo: require('@/assets/images/matw.png'), share: 60 },
-        { id: 2, name: 'Al-khidmat', logo: require('@/assets/images/Al-khidmat.png'), share: 15 },
-        { id: 2, name: 'JDC', logo: require('@/assets/images/Jdc.png'), share: 15 },
-        { id: 3, name: 'personal', logo: require('@/assets/images/sadqaa.png'), share: 10 },
-      ],
-    },
-    {
-      id: 2,
-      name: 'Invest',
-      logo: require('@/assets/images/invest.png'),
-      share: 20,
-      furtherCategories: [
-        { id: 1, name: 'AHL', logo: require('@/assets/images/AHL.png'), share: 30 },
-        { id: 2, name: 'Hajj', logo: require('@/assets/images/kaaba.png'), share: 30 },
-        { id: 3, name: 'AMMF', logo: require('@/assets/images/AMMF.png'), share: 20 },
-        { id: 4, name: 'AHMF', logo: require('@/assets/images/AHMF.png'), share: 20 },
-      ],
-    },
-    {
-      id: 3,
-      name: 'Personal',
-      logo: require('@/assets/images/personal.png'),
-      share: 20,
-      furtherCategories: [
-        { id: 1, name: 'Me', logo: require('@/assets/images/me.png'), share: 50 },
-        { id: 2, name: 'Api', logo: require('@/assets/images/sister.png'), share: 50 },
-      ],
-    },
-    {
-      id: 4,
-      name: 'Home',
-      logo: require('@/assets/images/home.png'),
-      share: 20,
-      furtherCategories: [
-        { id: 1, name: 'Baba', logo: require('@/assets/images/baba.png'), share: 70 },
-        { id: 2, name: 'bhai', logo: require('@/assets/images/brother.png'), share: 30 },
-      ],
-    },
-    {
-      id: 5,
-      name: 'Savings',
-      logo: require('@/assets/images/jar.png'),
-      share: 20,
-      furtherCategories: [
-        { id: 1, name: 'Car', logo: require('@/assets/images/car.png'), share: 50 },
-        { id: 2, name: 'short term', logo: require('@/assets/images/saving.png'), share: 50 },
-      ],
-    },
-  ];
+        {
+          id: 1,
+          name: 'Charity',
+          logo: require('@/assets/images/charity.png'),
+          share: 20,
+          furtherCategories: [
+            { id: 1, name: 'MATW', logo: require('@/assets/images/matw.png'), share: 40 },
+            { id: 2, name: 'Al-khidmat', logo: require('@/assets/images/Al-khidmat.png'), share: 5 },
+            { id: 3, name: 'JDC', logo: require('@/assets/images/Jdc.png'), share: 5 },
+            { id: 4, name: 'personal', logo: require('@/assets/images/sadqaa.png'), share: 50 },
+          ],
+        },
+        {
+          id: 2,
+          name: 'Invest',
+          logo: require('@/assets/images/invest.png'),
+          share: 20,
+          furtherCategories: [
+            { id: 1, name: 'AHL', logo: require('@/assets/images/AHL.png'), share: 40 },
+            { id: 2, name: 'AHMF', logo: require('@/assets/images/AHMF.png'), share: 30 },
+            { id: 3, name: 'AMMF', logo: require('@/assets/images/AMMF.png'), share: 30 },
+          ],
+        },
+        {
+          id: 3,
+          name: 'Personal',
+          logo: require('@/assets/images/personal.png'),
+          share: 20,
+          furtherCategories: [
+            { id: 1, name: 'Me', logo: require('@/assets/images/me.png'), share: 50 },
+            { id: 2, name: 'Api', logo: require('@/assets/images/sister.png'), share: 50 },
+          ],
+        },
+        {
+          id: 4,
+          name: 'Home',
+          logo: require('@/assets/images/home.png'),
+          share: 20,
+          furtherCategories: [
+            { id: 1, name: 'Baba', logo: require('@/assets/images/baba.png'), share: 70 },
+            { id: 2, name: 'bhai', logo: require('@/assets/images/brother.png'), share: 30 },
+          ],
+        },
+        {
+          id: 5,
+          name: 'Savings',
+          logo: require('@/assets/images/jar.png'),
+          share: 20,
+          furtherCategories: [
+            { id: 1, name: 'short term', logo: require('@/assets/images/saving.png'), share: 50 },
+            { id: 2, name: 'Hajj', logo: require('@/assets/images/kaaba.png'), share: 50 },
+          ],
+        },
+      ];
 
-  // Calculate amount for a category based on its share of the total amount
+  useEffect(() => {
+    fetchUsdToPkrRate();
+  }, []);
+
+  // Fetch current USD to PKR conversion rate
+  const fetchUsdToPkrRate = async () => {
+    try {
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+      const data = await response.json();
+      setUsdToPkrRate(data.rates.PKR);
+    } catch (error) {
+      console.error('Error fetching USD to PKR rate:', error);
+    }
+  };
+
   const calculateMainCategoryAmount = (share: number): string => {
     const amount = Math.floor(parseFloat(totalAmount));
     return isNaN(amount) ? '0' : Math.floor((amount * share) / 100).toString();
   };
 
-  // Calculate the amount for subcategories based on their share of the parent category amount
   const calculateSubcategoryAmount = (mainAmount: number, subCategoryShare: number): string => {
-    const subCategoryAmount = Math.floor((mainAmount * subCategoryShare) / 100);
-    return subCategoryAmount.toString();
+    return Math.floor((mainAmount * subCategoryShare) / 100).toString();
   };
 
   const handleTilePress = (category: Category) => {
@@ -94,23 +106,43 @@ export default function HomeScreen() {
 
   const focusInputField = () => {
     if (inputRef.current) {
-      inputRef.current.blur(); // Ensure clean blur before re-focus
-      setTotalAmount(''); // Clear the input field
-      setTimeout(() => inputRef.current?.focus(), 100); // Slight delay for reliable focus
+      inputRef.current.blur();
+      setTotalAmount('');
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
   };
 
+  const calculateMATWAmount = () => {
+    const charityCategory = expenditureCategories.find(category => category.name === 'Charity');
+    const matwCategory = charityCategory?.furtherCategories?.find(sub => sub.name === 'MATW');
+
+    if (charityCategory && matwCategory) {
+      const mainCategoryAmount = parseInt(calculateMainCategoryAmount(charityCategory.share));
+      const matwAmount = parseInt(calculateSubcategoryAmount(mainCategoryAmount, matwCategory.share));
+
+      // Subtract 7% from MATW amount and convert to USD
+      const subtractedAmount = Math.ceil(matwAmount * 0.07);
+      const remainingAmount = matwAmount - subtractedAmount;
+      const usdAmount = Math.ceil(remainingAmount / usdToPkrRate);
+      return `Rs. ${matwAmount} \n $${usdAmount} ~ ${subtractedAmount}`;
+    }
+    return 'N/A';
+  };
+
+  const calculatePersonalAmount = (mainCategoryAmount: number, share: number) => {
+    const initialAmount = parseInt(calculateSubcategoryAmount(mainCategoryAmount, share));
+    const amountAfterSubtraction = initialAmount - 30;
+    return `Rs. ${initialAmount} \n ${amountAfterSubtraction} ~ 30`;
+  };
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: dark ? '#222' : '#E9E9E9' }]}>     
-      {/* Navbar */}
       <View style={styles.navbar}>
         <Image source={require('@/assets/images/cash.png')} style={styles.navbarLogo} />
         <ThemedText style={styles.navbarText}>Expenditures</ThemedText>
       </View>
 
       <ScrollView>
-        {/* Amount Input */}
         <ThemedView style={styles.inputContainer}>
           <TextInput
             ref={inputRef}
@@ -123,7 +155,6 @@ export default function HomeScreen() {
           />
         </ThemedView>
 
-        {/* Expenditure Tiles */}
         <FlatList
           data={expenditureCategories}
           keyExtractor={(item) => item.id.toString()}
@@ -132,7 +163,7 @@ export default function HomeScreen() {
             return (
               <TouchableOpacity onPress={() => handleTilePress(item)} style={styles.tile}>
                 <Image source={item.logo} style={styles.categoryLogo} />
-                <View style={styles.tileContent}>
+                <View style={styles.tileContent} key={item.id}>
                   <ThemedText style={styles.categoryName}>{item.name}</ThemedText>
                   <ThemedText style={styles.percentageText}>{item.share}%</ThemedText>
                   <ThemedText style={styles.amountText}>Rs. {mainCategoryAmount}</ThemedText>
@@ -142,7 +173,6 @@ export default function HomeScreen() {
           }}
         />
 
-        {/* Further Categories Section */}
         {selectedCategory && selectedCategory.furtherCategories && (
           <FlatList
             data={selectedCategory.furtherCategories}
@@ -152,13 +182,20 @@ export default function HomeScreen() {
             contentContainerStyle={styles.centeredList}
             renderItem={({ item }) => {
               const mainCategoryAmount = calculateMainCategoryAmount(selectedCategory.share);
-              const subcategoryAmount = calculateSubcategoryAmount(parseInt(mainCategoryAmount), item.share);
+              let displayAmount;
+              if (item.name === 'MATW') {
+                displayAmount = calculateMATWAmount();
+              } else if (item.name === 'personal') {
+                displayAmount = calculatePersonalAmount(parseInt(mainCategoryAmount), item.share);
+              } else {
+                displayAmount = `Rs. ${calculateSubcategoryAmount(parseInt(mainCategoryAmount), item.share)}`;
+              }
               return (
                 <View style={styles.horizontalTile}>
                   <Image source={item.logo} style={styles.categoryLogo} />
                   <ThemedText style={styles.categoryName}>{item.name}</ThemedText>
                   <ThemedText style={styles.percentageText}>{item.share}%</ThemedText>
-                  <ThemedText style={styles.amountText}>Rs. {subcategoryAmount}</ThemedText>
+                  <ThemedText style={styles.amountText}>{displayAmount}</ThemedText>
                 </View>
               );
             }}
@@ -166,7 +203,6 @@ export default function HomeScreen() {
         )}
       </ScrollView>
 
-      {/* Floating Action Button */}
       <TouchableOpacity
         style={[styles.fab, { backgroundColor: dark ? '#E9E9E9' : '#143D60' }]}
         onPress={focusInputField}
@@ -191,7 +227,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#143D60',
     paddingVertical: 10,
-    marginTop: 40,
     paddingHorizontal: 16,
   },
   navbarLogo: {

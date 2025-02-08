@@ -1,0 +1,126 @@
+[
+    {
+      "id": 1,
+      "name": "Charity",
+      "logo": "./../assets/images/charity.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "MATW",
+          "logo": "@/assets/images/matw.png",
+          "share": 60
+        },
+        {
+          "id": 2,
+          "name": "Al-khidmat",
+          "logo": "@/assets/images/Al-khidmat.png",
+          "share": 15
+        },
+        {
+          "id": 3,
+          "name": "JDC",
+          "logo": "@/assets/images/Jdc.png",
+          "share": 15
+        },
+        {
+          "id": 4,
+          "name": "personal",
+          "logo": "@/assets/images/sadqaa.png",
+          "share": 10
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Invest",
+      "logo": "@/assets/images/invest.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "AHL",
+          "logo": "@/assets/images/AHL.png",
+          "share": 30
+        },
+        {
+          "id": 2,
+          "name": "Hajj",
+          "logo": "@/assets/images/kaaba.png",
+          "share": 30
+        },
+        {
+          "id": 3,
+          "name": "AMMF",
+          "logo": "@/assets/images/AMMF.png",
+          "share": 20
+        },
+        {
+          "id": 4,
+          "name": "AHMF",
+          "logo": "@/assets/images/AHMF.png",
+          "share": 20
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Personal",
+      "logo": "./assets/images/personal.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "Me",
+          "logo": "/assets/images/me.png",
+          "share": 50
+        },
+        {
+          "id": 2,
+          "name": "Api",
+          "logo": "@/assets/images/sister.png",
+          "share": 50
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Home",
+      "logo": "@/assets/images/home.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "Baba",
+          "logo": "@/assets/images/baba.png",
+          "share": 70
+        },
+        {
+          "id": 2,
+          "name": "bhai",
+          "logo": "@/assets/images/brother.png",
+          "share": 30
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Savings",
+      "logo": "@/assets/images/jar.png",
+      "share": 20,
+      "furtherCategories": [
+        {
+          "id": 1,
+          "name": "Car",
+          "logo": "@/assets/images/car.png",
+          "share": 50
+        },
+        {
+          "id": 2,
+          "name": "short term",
+          "logo": "@/assets/images/saving.png",
+          "share": 50
+        }
+      ]
+    }
+  ]

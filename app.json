@@ -4,7 +4,7 @@
     "slug": "split-it",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/cash.png",
+    "icon": "./assets/images/playstore.png",
     "package": "com.Aliyanwhiz.myapp",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/cash.png",
+        "foregroundImage": "./assets/images/playstore.png",
         "backgroundColor": "#143D60"
       },
       "package": "com.aliyanwhiz.splitit"
@@ -22,14 +22,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/cash.png"
+      "favicon": "./assets/images/playstore.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/cash.png",
+          "image": "./assets/images/playstore.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#143D60"

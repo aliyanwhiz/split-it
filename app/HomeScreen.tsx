@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useTheme } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
+import App from './App';
 
 interface Category {
   id: number;
@@ -112,6 +113,10 @@ export default function HomeScreen() {
     }
   };
 
+  const HandleLogout = () => {
+    return <App />
+  };
+
   const calculateMATWAmount = () => {
     const charityCategory = expenditureCategories.find(category => category.name === 'Charity');
     const matwCategory = charityCategory?.furtherCategories?.find(sub => sub.name === 'MATW');
@@ -121,9 +126,9 @@ export default function HomeScreen() {
       const matwAmount = parseInt(calculateSubcategoryAmount(mainCategoryAmount, matwCategory.share));
 
       // Subtract 7% from MATW amount and convert to USD
-      const subtractedAmount = Math.ceil(matwAmount * 0.07);
+      const subtractedAmount = Math.floor(matwAmount * 0.07);
       const remainingAmount = matwAmount - subtractedAmount;
-      const usdAmount = Math.ceil(remainingAmount / usdToPkrRate);
+      const usdAmount = Math.floor(remainingAmount / usdToPkrRate);
       return `Rs. ${matwAmount} \n $${usdAmount} ~ ${subtractedAmount}`;
     }
     return 'N/A';
@@ -131,15 +136,23 @@ export default function HomeScreen() {
 
   const calculatePersonalAmount = (mainCategoryAmount: number, share: number) => {
     const initialAmount = parseInt(calculateSubcategoryAmount(mainCategoryAmount, share));
-    const amountAfterSubtraction = initialAmount - 30;
-    return `Rs. ${initialAmount} \n ${amountAfterSubtraction} ~ 30`;
+    const amountAfterSubtraction = initialAmount - 25;
+    return `Rs. ${initialAmount} \n ${amountAfterSubtraction} ~ 25`;
   };
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: dark ? '#222' : '#E9E9E9' }]}>     
       <View style={styles.navbar}>
-        <Image source={require('@/assets/images/cash.png')} style={styles.navbarLogo} />
-        <ThemedText style={styles.navbarText}>Expenditures</ThemedText>
+        <View style={styles.navbarLogo}>          
+          <Image source={require('@/assets/images/cash.png')} style={styles.navbarLogoImg} />
+          <ThemedText style={styles.navbarText}>Expenditures</ThemedText>
+        </View>
+        <View>
+          <TouchableOpacity onPress={HandleLogout}
+          >
+          <MaterialIcons name="logout" size={24} color={'#E9E9E9'} />
+        </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView>
@@ -223,6 +236,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   navbar: {
+    marginTop: 40,
+    display: 'flex',
+    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#143D60',
@@ -230,6 +246,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   navbarLogo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  navbarLogoImg: {
     width: 30,
     height: 30,
     marginRight: 12,

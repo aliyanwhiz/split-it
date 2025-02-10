@@ -4,7 +4,8 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useTheme } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
-import App from './App';
+import { useNavigation } from '@react-navigation/native';
+import { useNavigationContainerRef } from '@react-navigation/native';
 
 interface Category {
   id: number;
@@ -19,6 +20,8 @@ export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [usdToPkrRate, setUsdToPkrRate] = useState<number>(1);
   const inputRef = useRef<TextInput>(null);
+  const navigation = useNavigation();
+  const navigationRef = useNavigationContainerRef();
   const { dark } = useTheme();
 
   const expenditureCategories = [
@@ -81,6 +84,12 @@ export default function HomeScreen() {
     fetchUsdToPkrRate();
   }, []);
 
+  useEffect(() => {
+    if (navigationRef.isReady()) {
+      navigationRef.navigate('LoginScreen');
+    }
+  }, []);
+
   // Fetch current USD to PKR conversion rate
   const fetchUsdToPkrRate = async () => {
     try {
@@ -114,8 +123,9 @@ export default function HomeScreen() {
   };
 
   const HandleLogout = () => {
-    return <App />
+    navigation.replace('LoginScreen');
   };
+
 
   const calculateMATWAmount = () => {
     const charityCategory = expenditureCategories.find(category => category.name === 'Charity');
@@ -148,7 +158,7 @@ export default function HomeScreen() {
           <ThemedText style={styles.navbarText}>Expenditures</ThemedText>
         </View>
         <View>
-          <TouchableOpacity onPress={HandleLogout}
+          <TouchableOpacity onPress={() => HandleLogout()}
           >
           <MaterialIcons name="logout" size={24} color={'#E9E9E9'} />
         </TouchableOpacity>
@@ -156,21 +166,22 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView>
-        <ThemedView style={styles.inputContainer}>
-          <TextInput
-            ref={inputRef}
-            style={styles.input}
-            placeholder="Enter total amount"
-            placeholderTextColor="#999"
-            keyboardType="numeric"
-            value={totalAmount}
-            onChangeText={setTotalAmount}
-          />
-        </ThemedView>
-
         <FlatList
           data={expenditureCategories}
           keyExtractor={(item) => item.id.toString()}
+          ListHeaderComponent={(
+            <ThemedView style={styles.inputContainer}>
+              <TextInput
+                ref={inputRef}
+                style={styles.input}
+                placeholder="Enter total amount"
+                placeholderTextColor="#999"
+                keyboardType="numeric"
+                value={totalAmount}
+                onChangeText={setTotalAmount}
+              />
+            </ThemedView>
+          )}
           renderItem={({ item }) => {
             const mainCategoryAmount = calculateMainCategoryAmount(item.share);
             return (

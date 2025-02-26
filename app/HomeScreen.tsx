@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   navbar: {
-    marginTop: 40,
+    //marginTop: 40,
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
